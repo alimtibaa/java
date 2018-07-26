@@ -1,0 +1,521 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package projetali;
+
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Ali-M
+ */
+public class membre extends javax.swing.JFrame implements ItemListener {
+public String path;
+    File file ;
+public Connection con ;
+    public Statement st;
+    public Statement st1;
+    public Statement st2;
+    public Statement st3;
+    public Statement st4;
+    public Statement st5;
+    public ResultSet rst;
+    public ResultSet rst1;
+    public ResultSet rst2;
+    float prix;
+    public String x;
+    private HashMap<JCheckBox, ArrayList<Integer>> map = new HashMap<>();
+    public float total ;
+    private int MAX_CHECKS ;
+    JCheckBox checkBox;
+    JPanel checkPanel = new JPanel(new GridLayout(4,0));
+    String url = "jdbc:mysql://localhost:3306/salle?autoReconnect=true&useSSL=false";
+    String utilisateur = "ali";
+    String motDePasse = "alimtibaa";
+    public membre() {
+    initComponents();
+    this.setLayout(null);
+    this.setTitle("Membre");
+    this.setLocationRelativeTo(null);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setResizable(false);
+    checkPanel.setBounds(70, 410, 230, 100);
+    checkPanel.setOpaque(true);
+    
+    this.add(checkPanel);
+    this.setVisible(true);   
+        
+        try {
+Class.forName("com.mysql.jdbc.Driver");
+con= DriverManager.getConnection( url, utilisateur, motDePasse );
+st=con.createStatement();
+st1=con.createStatement();
+st2=con.createStatement();
+st3=con.createStatement();
+st4=con.createStatement();
+st5=con.createStatement();
+ResultSet rst1 = st.executeQuery( "SELECT count(ID_SPORT)  FROM sport;" );
+while ( rst1.next() ) {
+MAX_CHECKS=rst1.getInt(1);}
+ResultSet rst = st.executeQuery( "SELECT *  FROM sport;" );
+while ( rst.next() ) {
+   
+               ArrayList<Integer> a = new ArrayList<>();
+            String al = rst.getString( "nom_s" );
+
+            checkBox = new JCheckBox(al);
+            checkBox.setName(al);
+            checkBox.setForeground(new java.awt.Color(0,102,102));
+            checkBox.addItemListener(this);
+            map.put(checkBox, a);
+            
+            checkPanel.add(checkBox);
+                      }
+
+            }
+        catch(Exception ex){
+        System.out.println(ex);}
+       
+        add(checkPanel);      
+        
+    }
+ public void itemStateChanged(ItemEvent e) {
+
+        JCheckBox source = (JCheckBox) e.getItemSelectable();
+        float x ;
+        x = Float.valueOf(jTextField11.getText());
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            try {
+         
+         String inc = source.getName();
+         
+         ResultSet res2 = st.executeQuery( "SELECT prix  FROM sport where nom_s= '"+inc+"' ;" );
+         while ( res2.next() ) {
+         prix=res2.getFloat(1);}
+            total=total+(prix*x);
+            ResultSet rst5 = st1.executeQuery( "SELECT ID_SPORT  FROM sport where nom_s= '"+inc+"' ;" );
+         while ( rst5.next() ) {
+         st2.executeUpdate("insert into idsport (id_s) values ('"+rst5.getInt(1)+"');");
+            
+             }
+           }catch(Exception ex){
+            System.out.println(ex);}
+
+        }
+        else if (!(e.getStateChange() == ItemEvent.SELECTED)){
+            try {
+         
+         String inc = source.getName();
+         
+         ResultSet rst2 = st3.executeQuery( "SELECT prix  FROM sport where nom_s= '"+inc+"' ;" );
+         while ( rst2.next() ) {
+         prix=rst2.getFloat(1);}
+            total=total-(prix*x);
+            ResultSet rst6 = st4.executeQuery( "SELECT ID_SPORT  FROM sport where nom_s= '"+inc+"' ;" ); 
+while ( rst6.next() ) {
+         st5.executeUpdate("delete from idsport where (id_s = '"+rst6.getInt(1)+"');");
+            
+             }
+           }catch(Exception ex){
+            System.out.println(ex);}
+    }
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
+        jTextField10 = new javax.swing.JTextField();
+        jTextField11 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(400, 532));
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("MEMBRE");
+        jLabel1.setToolTipText("");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(53, 86, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/projetali/home-banner.jpg"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 130));
+
+        jButton2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(51, 51, 0));
+        jButton2.setText("Afficher Tout");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 200, -1));
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel3.setText("Ajouter un Membre");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, -1, -1));
+
+        jLabel8.setText("Nom :");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, -1, 20));
+
+        jLabel9.setText("Prenom :");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, -1, 20));
+
+        jLabel10.setText("Tel :");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, -1, 20));
+
+        jLabel11.setText("E-Mail :");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 310, -1, 20));
+
+        jLabel12.setText("Date-N :");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, -1, 20));
+
+        jLabel13.setText("Image :");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 360, -1, 20));
+
+        jLabel14.setText("Durée :");
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, -1, 20));
+
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, 70, -1));
+
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 70, -1));
+
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 360, 70, -1));
+        getContentPane().add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 70, -1));
+        getContentPane().add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 70, -1));
+
+        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField11ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 310, 70, -1));
+
+        jLabel4.setText("Sports :");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, -1, -1));
+
+        jButton1.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/projetali/6.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, -1, -1));
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/projetali/7.png"))); // NOI18N
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 130, -1, -1));
+
+        jButton4.setText("choisir");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 30, 20));
+        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, -1, -1));
+
+        jLabel5.setText("Key :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, -1, 20));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 70, -1));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       this.setVisible(false);
+        afficher_m m1 = new afficher_m ();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    int x =0 ;
+    int y =0 ;
+    try {
+        Statement sta1=con.createStatement();
+        Statement sta2=con.createStatement();
+        Statement sta3=con.createStatement();
+        Statement sta4=con.createStatement();
+        Statement sta5=con.createStatement();
+        Statement sta6=con.createStatement();
+        Statement sta7=con.createStatement();
+        Statement st1=con.createStatement();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(jDateChooser1.getDate());
+        sta1.executeUpdate("insert into membre(NOM, PRENOM, NUM_TEL,EMAIL,IMAGE,DATE_NAIS) "
+                + "values('"+jTextField5.getText()+ "','" +jTextField6.getText()+ "','"+ jTextField7.getText()+ "'"
+                        + ",'" +jTextField8.getText()+ "','"+jTextField10.getText()+"','"+date+"');");
+        
+        ResultSet rst3= sta2.executeQuery("Select ID_MEMBRE from membre where DATE_INSC=(select max(DATE_INSC) from membre)");
+        while (rst3.next()) {
+            
+          	 x =rst3.getInt("ID_MEMBRE"); 	
+         }    
+        sta3.executeUpdate("insert into abonement ( ID_MEMBRE,DUREE,TOTAL) values("+x+",'"+ jTextField11.getText() +"',"+total+");");
+        
+        ResultSet res4=sta4.executeQuery("SELECT id_abonement from abonement "
+                + "where DATE_INSCRIPTION =(SELECT MAX(DATE_INSCRIPTION) from abonement);");
+        while ( res4.next() ) {
+         y = res4.getInt(1);
+            
+             }
+        
+        ResultSet rst7 = sta5.executeQuery( "SELECT ID_S  FROM idsport ;" );
+         while ( rst7.next() ) {
+         sta6.executeUpdate("insert into apartient (ID_ABONEMENT ,ID_SPORT) values ('"+y+"','"+rst7.getInt(1)+"');");
+            
+             }
+         int rst8 = sta7.executeUpdate("delete from idsport");
+          
+        
+        
+        
+        
+        
+        
+        
+        
+    } catch (SQLException ex) {
+        Logger.getLogger(membre.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        try {
+			
+			String apiKey = "apikey=" + jTextField1.getText();
+			String message = "&message=" + "Your ID is '"+x+"'.Thank you for your trust"
+                                + " We hope you enjoy your time with us ";
+			String sender = "&sender=" + "AliMtibaa";
+			String numbers = "&numbers=" + "216" + jTextField7.getText();
+			
+			
+			HttpURLConnection conn = (HttpURLConnection) new URL("https://api.txtlocal.com/send/?").openConnection();
+			String data = apiKey + numbers + message + sender;
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+			conn.getOutputStream().write(data.getBytes("UTF-8"));
+			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			final StringBuffer stringBuffer = new StringBuffer();
+			String line;
+			while ((line = rd.readLine()) != null) {
+				
+                                JOptionPane.showMessageDialog(null, "message envoyer avec succée");
+			}
+			rd.close();
+			
+			
+		} catch (Exception e) {
+			System.out.println("Error SMS "+e);
+			
+		}
+	
+        
+        
+        
+        
+        
+        jTextField10.setText("");
+        jTextField11.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
+        jDateChooser1.setDateFormatString("");
+        
+        
+        
+        
+        
+              // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+this.setVisible(false);    
+Home h = new Home();// TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
+
+    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField11ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("choosertitle");
+        chooser.setAcceptAllFileFilterUsed(false);
+
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            file = chooser.getSelectedFile();
+            path = file.getPath().replace("\\", "\\\\\\\\");
+            jTextField10.setText(path);
+        } else {
+            System.out.println("No Selection ");
+        }
+        //   String s = getpath();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(membre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(membre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(membre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(membre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new membre().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
+    // End of variables declaration//GEN-END:variables
+
+   
+}
